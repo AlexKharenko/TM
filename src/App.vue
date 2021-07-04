@@ -1,15 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <Column id="todo" col_name="To Do" :list="getTodoList" />
+  <Column id="in_pro" col_name="In Progress" :list="getInProList" />
+  <Column id="comp" col_name="Completed" :list="getCompList" />
+
+  <PopUpAddTask v-if="isAddTaskPopUpActive" />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import { mapGetters, mapActions } from "vuex";
+
+import Column from "./components/Column.vue";
+import PopUpAddTask from "./components/PopUpAddTask.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    Column,
+    PopUpAddTask,
+  },
+  methods:{
+    ...mapActions(["loadTasks"]),
+  },
+  computed: {
+    ...mapGetters([
+      "getTodoList",
+      "getInProList",
+      "getCompList",
+      "isAddTaskPopUpActive",
+    ]),
+  },
+  mounted(){
+    this.loadTasks();
   },
 };
 </script>
@@ -22,5 +43,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 </style>
