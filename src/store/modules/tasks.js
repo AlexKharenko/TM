@@ -14,7 +14,6 @@ const actions = {
   loadTasks({ commit }) {
     const tasks = JSON.parse(localStorage.getItem("tasks"));
     if (!tasks) {
-      console.log("No tasks");
       return;
     }
     let todo = [];
@@ -29,15 +28,35 @@ const actions = {
     commit("setInPro", in_pro);
     commit("setComp", comp);
   },
-  editTaskStatus(/* { commit, state } ,*/ { id, status }) {
+  editTask({commit}, {id, field, field_value}){
     let tasks = JSON.parse(localStorage.getItem("tasks"));
     if (!tasks) {
       return;
     }
     const index = tasks.findIndex((task) => task.id === +id);
-    // const prev_status = tasks[index].status;
+    tasks[index][field] = field_value;
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    switch (tasks[index].status) {
+      case "todo":
+        commit("editElemInArray", {field: "todo_list", id, value: tasks[index]});
+        break;
+      case "in_pro":
+        commit("editElemInArray", {field: "in_progress_list", id, value: tasks[index]});
+        break;
+      case "comp":
+        commit("editElemInArray", {field: "completed_list", id, value: tasks[index]});
+        break;
+    }
+  },
+  editTaskStatus({ dispatch }, { id, status }) {
+    let tasks = JSON.parse(localStorage.getItem("tasks"));
+    if (!tasks) {
+      return;
+    }
+    const index = tasks.findIndex((task) => task.id === +id);
     tasks[index].status = status;
     localStorage.setItem("tasks", JSON.stringify(tasks));
+    dispatch("loadTasks");
   },
   addTask({ commit }, new_task) {
     let tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -57,10 +76,10 @@ const actions = {
     if (!tasks) {
       return;
     }
-    const { status } = tasks.find((task) => task.id === id)[0].stauts;
+    const { status } = tasks.find((task) => task.id === +id);
     tasks = tasks.filter((task) => task.id !== id);
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    if (!status) {
+    if (status) {
       if (status === "todo") commit("removeTodo", id);
       if (status === "in_pro") commit("removeInPro", id);
       if (status === "comp") commit("removeComp", id);
@@ -76,6 +95,11 @@ const mutations = {
   addTodo: (state, data) => state.todo_list.push(data),
   addInPro: (state, data) => state.in_progress_list.push(data),
   addComp: (state, data) => state.completed_list.push(data),
+
+  editElemInArray: (state, {field, id, value}) => {
+    state[field] = state[field].filter((task) => task.id !== +id);
+    state[field].push(value);
+  },
 
   removeTodo: (state, id) =>
     (state.todo_list = state.todo_list.filter((task) => task.id !== id)),
