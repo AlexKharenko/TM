@@ -12,23 +12,32 @@ const getters = {
 
 const actions = {
   loadTasks({ commit }) {
-    const tasks = JSON.parse(localStorage.getItem("tasks"));
+    let tasks = JSON.parse(localStorage.getItem("tasks"));
     if (!tasks) {
       return;
     }
     let todo = [];
     let in_pro = [];
     let comp = [];
+    const cur_date = new Date().getTime();
     tasks.forEach((task) => {
       if (task.status === "todo") todo.push(task);
       if (task.status === "in_pro") in_pro.push(task);
-      if (task.status === "comp") comp.push(task);
+      if (task.status === "comp") {
+        if (task.expire_date > cur_date) {
+          comp.push(task);
+        }
+        if (task.expire_date <= cur_date) {
+          tasks = tasks.filter((task_temp) => task_temp.id !== task.id);
+        }
+      }
     });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
     commit("setTodo", todo);
     commit("setInPro", in_pro);
     commit("setComp", comp);
   },
-  editTask({commit}, {id, field, field_value}){
+  editTask({ commit }, { id, field, field_value }) {
     let tasks = JSON.parse(localStorage.getItem("tasks"));
     if (!tasks) {
       return;
@@ -38,13 +47,25 @@ const actions = {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     switch (tasks[index].status) {
       case "todo":
-        commit("editElemInArray", {field: "todo_list", id, value: tasks[index]});
+        commit("editElemInArray", {
+          field: "todo_list",
+          id,
+          value: tasks[index],
+        });
         break;
       case "in_pro":
-        commit("editElemInArray", {field: "in_progress_list", id, value: tasks[index]});
+        commit("editElemInArray", {
+          field: "in_progress_list",
+          id,
+          value: tasks[index],
+        });
         break;
       case "comp":
-        commit("editElemInArray", {field: "completed_list", id, value: tasks[index]});
+        commit("editElemInArray", {
+          field: "completed_list",
+          id,
+          value: tasks[index],
+        });
         break;
     }
   },
@@ -55,6 +76,13 @@ const actions = {
     }
     const index = tasks.findIndex((task) => task.id === +id);
     tasks[index].status = status;
+    if (status === "comp") {
+      let date = new Date();
+      date.setDate(date.getDate() + 7);
+      tasks[index].expire_date = date.getTime();
+    } else {
+      tasks[index].expire_date = null;
+    }
     localStorage.setItem("tasks", JSON.stringify(tasks));
     dispatch("loadTasks");
   },
@@ -65,6 +93,11 @@ const actions = {
     new_task.id = +id + 1;
     localStorage.setItem("biggest_id", +id + 1);
     if (!tasks) tasks = [];
+    if (new_task.status === "comp") {
+      let date = new Date();
+      date.setDate(date.getDate() + 7);
+      new_task.expire_date = date.getTime();
+    };
     tasks.push(new_task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
     if (new_task.status === "todo") commit("addTodo", new_task);
@@ -96,7 +129,7 @@ const mutations = {
   addInPro: (state, data) => state.in_progress_list.push(data),
   addComp: (state, data) => state.completed_list.push(data),
 
-  editElemInArray: (state, {field, id, value}) => {
+  editElemInArray: (state, { field, id, value }) => {
     state[field] = state[field].filter((task) => task.id !== +id);
     state[field].push(value);
   },
