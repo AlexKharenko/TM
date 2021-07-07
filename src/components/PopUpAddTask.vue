@@ -27,16 +27,6 @@
           placeholder="Enter the details"
         />
       </div>
-      <!-- <div class="input-block">
-        <p class="form-field-title">Expiry Date</p>
-        <input
-          v-model="expiry_date"
-          class="form-field"
-          type="date"
-          name="expiry_date"
-        />
-      </div> -->
-
       <button class="btn btn-submit" type="submit">Add</button>
     </form>
   </teleport>
@@ -51,11 +41,10 @@ export default {
       task_name: "",
       empty_name: false,
       description: "",
-      //   expiry_date: "",
     };
   },
   computed: {
-    ...mapGetters(["getAddTaskCalledFrom"]),
+    ...mapGetters(["popUpTaskCalledFrom"]),
   },
   methods: {
     ...mapActions(["changeAddTaskPopUpStatus", "addTask"]),
@@ -68,9 +57,9 @@ export default {
       const new_task = {
         task_name: this.task_name,
         description: this.description,
-        status: this.getAddTaskCalledFrom,
+        status: this.popUpTaskCalledFrom,
+        expire_date: null,
       };
-      console.log(new_task);
       this.addTask(new_task);
       this.changeAddTaskPopUpStatus(false);
     },
