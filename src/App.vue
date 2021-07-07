@@ -4,6 +4,8 @@
   <Column id="comp" col_name="Completed" :list="getCompList" />
 
   <PopUpAddTask v-if="isAddTaskPopUpActive" />
+  <PopUpEditTask v-if="isEditTaskPopUpActive" />
+  <PopUpDeleteTask v-if="isDeleteTaskPopUpActive" />
 </template>
 
 <script>
@@ -11,14 +13,18 @@ import { mapGetters, mapActions } from "vuex";
 
 import Column from "./components/Column.vue";
 import PopUpAddTask from "./components/PopUpAddTask.vue";
+import PopUpEditTask from "./components/PopUpEditTask.vue";
+import PopUpDeleteTask from "./components/PopUpDeleteTask.vue";
 
 export default {
   name: "App",
   components: {
     Column,
     PopUpAddTask,
+    PopUpEditTask,
+    PopUpDeleteTask,
   },
-  methods:{
+  methods: {
     ...mapActions(["loadTasks"]),
   },
   computed: {
@@ -27,9 +33,11 @@ export default {
       "getInProList",
       "getCompList",
       "isAddTaskPopUpActive",
+      "isEditTaskPopUpActive",
+      "isDeleteTaskPopUpActive",
     ]),
   },
-  mounted(){
+  mounted() {
     this.loadTasks();
   },
 };

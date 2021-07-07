@@ -32,12 +32,11 @@ export default {
   methods: {
     ...mapActions([
       "removeTask",
-      "changeAddTaskCalledFrom",
+      "changePopUpTaskCalledFrom",
       "changeAddTaskPopUpStatus",
     ]),
     AddTaskClick() {
-      console.log(this.id)
-      this.changeAddTaskCalledFrom(this.id);
+      this.changePopUpTaskCalledFrom(this.id);
       this.changeAddTaskPopUpStatus(true);
     },
   },
