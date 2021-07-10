@@ -6,9 +6,30 @@
     @dragstart="dragStart"
     @dragover.stop
   >
-    {{ task }}
-    <button @click="editTaskClick">edit</button>
-    <button @click="removeTaskClick">del</button>
+    <div class="title">
+      <div class="title-text">
+        <p
+          class="dot"
+          :style="[
+            task.task_color
+              ? { background: task.task_color }
+              : { background: 'black' },
+          ]"
+        ></p>
+        <h3>{{ task.task_name }}</h3>
+      </div>
+      <div class="btn-block">
+        <button class="btn btn-action" @click="editTaskClick">
+          <img src="../assets/pen.png" alt="Edit" />
+        </button>
+        <button class="btn btn-action" @click="removeTaskClick">
+          <img src="../assets/delete.png" alt="Delete" />
+        </button>
+      </div>
+    </div>
+    <div class="description">
+      <p>{{ task.description }}</p>
+    </div>
   </div>
 </template>
 
@@ -44,5 +65,57 @@ export default {
 <style lang="scss">
 .card {
   background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 6px 2px #f3f3f3;
+  margin: 20px 0;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title-text {
+      display: flex;
+      align-items: center;
+      .dot {
+        margin-right: 10px;
+        height: 4px;
+        width: 4px;
+        border-radius: 50%;
+      }
+      h3 {
+        font-weight: 600;
+        font-size: 18px;
+        margin-right: 3px;
+      }
+    }
+    .btn-block {
+      display: flex;
+      .btn-action {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        overflow: hidden;
+        text-align: center;
+        img {
+          position: relative;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 15px;
+          height: 15px;
+        }
+      }
+      .btn-action:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
+  .description {
+    margin-top: 18px;
+    p {
+      color: #a7a7a7;
+      font-size: 16px;
+    }
+  }
 }
 </style>

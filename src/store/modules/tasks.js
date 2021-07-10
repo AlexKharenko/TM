@@ -97,7 +97,7 @@ const actions = {
       let date = new Date();
       date.setDate(date.getDate() + 7);
       new_task.expire_date = date.getTime();
-    };
+    }
     tasks.push(new_task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
     if (new_task.status === "todo") commit("addTodo", new_task);

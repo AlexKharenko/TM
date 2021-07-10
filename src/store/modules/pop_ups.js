@@ -34,10 +34,13 @@ const actions = {
 
 const mutations = {
   setAddTaskPopUpStatus: (state, data) => (state.add_task_pop_up_active = data),
-  setEditTaskPopUpStatus: (state, data) => (state.edit_task_pop_up_active = data),
-  setDeleteTaskPopUpStatus: (state, data) => (state.delete_task_pop_up_active = data),
+  setEditTaskPopUpStatus: (state, data) =>
+    (state.edit_task_pop_up_active = data),
+  setDeleteTaskPopUpStatus: (state, data) =>
+    (state.delete_task_pop_up_active = data),
   setTaskId: (state, data) => (state.task_id = data),
-  setPopUpTaskCalledFrom: (state, data) => (state.pop_up_task_called_from = data),
+  setPopUpTaskCalledFrom: (state, data) =>
+    (state.pop_up_task_called_from = data),
 };
 
 export default {

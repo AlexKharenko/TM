@@ -1,36 +1,42 @@
 <template>
   <teleport to="#pop-up">
-    <button
-      class="btn btn-close-pop-up"
-      @click="changeEditTaskPopUpStatus(false)"
-    >
-      Close
-    </button>
-    <form @submit.prevent="handleSubmit">
-      <div class="input-block">
-        <p class="form-field-title">Task Name</p>
-        <input
-          v-model="task_name"
-          class="form-field"
-          type="text"
-          name="task_name"
-          placeholder="Enter task name"
-        />
-        <p v-if="empty_name">error</p>
+    <div class="pop-up">
+      <div class="pop-up-window">
+        <button
+          class="btn btn-close-pop-up"
+          @click="changeEditTaskPopUpStatus(false)"
+        >
+          <p>+</p>
+        </button>
+        <form @submit.prevent="handleSubmit">
+          <div class="input-block">
+            <p class="form-field-title">Task Name</p>
+            <input
+              v-model="task_name"
+              class="form-field"
+              type="text"
+              name="task_name"
+              placeholder="Enter task name"
+            />
+            <p v-if="empty_name" class="error-msg">Should be not empty!</p>
+          </div>
+          <div class="input-block">
+            <p class="form-field-title">Description</p>
+            <textarea
+              v-model="description"
+              name="description"
+              id="description"
+              class="form-field form-field-description"
+              placeholder="Enter the details"
+              cols="30"
+              rows="10"
+            ></textarea>
+            <p v-if="empty_desc" class="error-msg">Should be not empty!</p>
+          </div>
+          <button class="btn btn-submit" type="submit">Edit</button>
+        </form>
       </div>
-      <div class="input-block">
-        <p class="form-field-title">Description</p>
-        <input
-          v-model="description"
-          class="form-field"
-          type="text"
-          name="description"
-          placeholder="Enter the details"
-        />
-        <p v-if="empty_desc">error</p>
-      </div>
-      <button class="btn btn-submit" type="submit">Edit</button>
-    </form>
+    </div>
   </teleport>
 </template>
 

@@ -1,21 +1,21 @@
 <template>
   <teleport to="#pop-up">
-    <button
-      class="btn btn-close-pop-up"
-      @click="changeDeleteTaskPopUpStatus(false)"
-    >
-      Close
-    </button>
-    <div class="main-block">
-      <h3 class="pop-up-question">Are you really want to delete this task?</h3>
-      <div class="btn-line">
-        <button class="btn btn-agree" @click="handleClick">Yes</button>
-        <button
-          class="btn btn-cancel"
-          @click="changeDeleteTaskPopUpStatus(false)"
-        >
-          Cancel
-        </button>
+    <div class="pop-up">
+      <div class="pop-up-window">
+        <div class="main-block">
+          <h3 class="pop-up-question">
+            Are you really want to delete this task?
+          </h3>
+          <div class="btn-line">
+            <button class="btn btn-agree" @click="handleClick">Yes</button>
+            <button
+              class="btn btn-cancel"
+              @click="changeDeleteTaskPopUpStatus(false)"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </teleport>
@@ -45,3 +45,33 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.main-block {
+  position: relative;
+  .btn-line {
+    text-align: center;
+    margin-top: 10px;
+    button {
+      width: 70px;
+      font-size: 16px;
+      border-radius: 3px;
+      border: none;
+    }
+    .btn-agree {
+      background: red;
+      color: white;
+      margin-right: 5px;
+    }
+    .btn-cancel {
+      background: white;
+    }
+    .btn-agree:hover {
+      background: rgb(204, 38, 38);
+    }
+    .btn-cancel:hover {
+      background: rgb(226, 226, 226);
+    }
+  }
+}
+</style>

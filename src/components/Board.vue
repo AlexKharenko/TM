@@ -23,8 +23,5 @@ export default {
 <style lang="scss">
 .board {
   height: 60vh;
-  padding: 20px;
-  margin: 20px;
-  background: grey;
 }
 </style>
