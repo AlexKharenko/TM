@@ -13,16 +13,8 @@ export default {
     ...mapActions(["editTaskStatus"]),
     drop(e) {
       const card_id = e.dataTransfer.getData("card_id");
-      const card = document.getElementById(card_id);
-      card.style.display = "block";
 
       this.editTaskStatus({ id: card_id, status: this.id });
-      if (e.target.className === "msg") {
-        e.target.parentElement.appendChild(card);
-      }
-      if (e.target.className === "board") {
-        e.target.appendChild(card);
-      }
     },
   },
 };
@@ -31,8 +23,5 @@ export default {
 <style lang="scss">
 .board {
   height: 60vh;
-  padding: 20px;
-  margin: 20px;
-  background: grey;
 }
 </style>
